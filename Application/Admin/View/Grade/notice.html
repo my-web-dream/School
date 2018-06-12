@@ -1,0 +1,100 @@
+<extend name="Public:grade" />
+<block name="grade">
+<script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload/ajaxfileupload.js" ></script>
+<script type="text/javascript">
+$(function(){
+	$(".m-btnconfirm a").click(function(){
+		var title = $("input[name='title']").val();
+		var describe = $("textarea[name='describe']").val();
+		if(title == ""){
+			layer.msg('标题必填！');
+			return false;
+		}
+		if(describe == ""){
+			layer.msg('内容必填！');
+			return false;
+		}
+		if(describe.length > 100){
+			layer.msg('内容过长！');
+			return false;
+		}
+		$.ajaxFileUpload({
+			url:"<{:U('Grade/notice_release')}>",//这个是要提交到上传的php程序文件
+			secureuri:false,//是否启用安全提交
+			fileElementId:'notice',//需要上传的文件域ID
+			dataType: 'json',//返回数据类型
+			data:{title:title,describe:describe},
+			type: 'post',//POST方式提交
+			success: function (data,status)
+			{
+				if(data == 'file none'){
+					layer.msg("文件未上传，请重试");
+					return false;
+				}else if(data == 'undefind type'){
+					layer.msg("未知文件类型");
+					return false;
+				}else if(data == 'too large'){
+					layer.msg("文件过大，请上传2M以内的文件");
+					return false;
+				}else if(data == 'other error'){
+					layer.msg("其他错误");
+					return false;
+				}else if(data == 'success'){
+					layer.msg('消息发布成功！',{time:1500},function(){
+	        			window.location.href = "<{:U('Grade/notice_select')}>";
+	        		});
+				}
+			},
+			error: function (data,status)
+			{
+				layer.msg("服务器异常错误");
+				return false;
+			}
+		})  //ajax over
+		//ajax提交，弹窗提示ok
+//        $.post("<{:U('Grade/notice_release')}>",{title:title,describe:describe},function(data,status){
+//        	if(data == 'success'){
+//        		layer.msg('通知发布成功！',{time:1500},function(){
+//        			window.location.href = "<{:U('Grade/notice_select')}>";
+//        		});
+//        	}else{
+//        		layer.msg('通知发布失败,请重试！');
+//        	}
+//        });	//post   
+	})
+})
+//图片本地预览
+function preview(avatar){
+    for(var i=0;i<document.getElementById(avatar).files.length;i++){
+        var f = document.getElementById(avatar).files[i];
+        var src = window.URL.createObjectURL(f);
+       $("#"+avatar).next().html('<img src='+src+' width="200" height="180" />');
+   } 
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>通知发布</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">标题:</label>
+					<input type="text" name="title" placeholder="请填写标题" value=""/>
+				</div><br>
+				<input id="notice" type="file" onchange="preview('notice')" size="45" name="notice">
+				预览效果：
+				<div></div>
+				<br><br>
+				<div class="m-group">
+					<label class="m-grouptitle">内容：</label>
+					<textarea name="describe" placeholder="字数限100字以内" /></textarea>
+				</div>
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)">发布</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>
+

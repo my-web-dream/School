@@ -1,0 +1,79 @@
+<extend name="Public:class" />
+<block name="class">
+<script type="text/javascript">
+$(function(){
+	$("#editor_info .d-comfire").click(function(){
+		layer.msg("请填写用户账号");
+	})
+})
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>班级信息</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">班级名称:</label>
+					<input type="text" value="<{$info.name}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">主要负责人:</label>
+					<input type="text" value="<{$info.teacher}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">联系方式:</label>
+					<input type="text" value="<{$info.teacher_phone}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">所属学校:</label>
+					<input type="text" value="<{$Think.session.sch_name}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">所属年级:</label>
+					<input type="text" value="<{$info.grade_name}>" readonly/>
+				</div>
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)" data-reveal-id="editor_info" data-animation="fade">编辑</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+	
+	<!-- 修改班级信息 -->
+	<div id="editor_info" class="reveal-modal large">
+		<p class="d-title">修改班级信息<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>班级名称:<span style="color:red">*</span><span class="class_name" style="color:red"></span></label>
+				<input type="text" name="class_name" value="<{$info.name}>"/>
+			</div>
+			<div class="d-textbox">
+				<label>主要负责人:<span style="color:red">*</span><span class="class_leader" style="color:red"></span></label>
+				<input type="text" name="class_leader" value="<{$info.teacher}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>联系方式:<span style="color:red">*</span><span class="class_phone" style="color:red"></span></label>
+				<input type="text"  name="class_phone" value="<{$info.teacher_phone}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>所属学校:<span style="color:red">*</span></label>
+				<input type="text"  name="class_school" value="<{$Think.session.sch_name}>" readonly/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>所属年级:<span style="color:red">*</span><span class="class_grade" style="color:red"></span></label>
+				<input type="text" name="class_grade" value="<{$info.grade_name}>" readonly/>
+				<span></span>
+			</div><br><br>
+			<div class="d-btngroup">
+				<input type="button" class="d-comfire" value="确定">
+				<input type="button" class="d-cancel" value="取消">	
+			</div>
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>
+

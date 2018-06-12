@@ -1,0 +1,71 @@
+<extend name="Public:class" />
+<block name="class">
+<script type="text/javascript">
+//ajax查看作业详情
+function des(id){
+	var src = $("#image")[0].src;	//获取src属性
+	//ajax提交，弹窗提示ok
+    $.post("<{:U('Class/homework_detail_select')}>",{id:id},function(data,status){
+    	$("#homework_info textarea").val(data.describe);	//显示作业详情
+    	$("#images").attr("src",src+data.image);	//显示作业图片
+    });	//post  
+}
+
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>作业历史记录</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-data">
+					<table>
+						<thead>
+							<tr>
+								<th> <input type="checkbox"> </th>
+								<th> 序号 </th>
+								<th> 教师姓名 </th>
+								<th> 所属学科 </th>
+								<th> 发布时间 </th>
+								<th> 作业详情 </th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="va">
+							<tr>
+								<td><input type="checkbox"></td>
+								<td><{$i}></td>
+								<td><{$va.teacher}></td>
+								<td><{$va.subject}></td>
+								<td><{$va.create_time|date="Y-m-d H:i:s",###}></td>
+								<td>
+									<a href="javascript:void(0)" data-reveal-id="homework_info" data-animation="fade" class="add-member" onclick="des('<{$va.id}>')">作业详情</a>
+								</td>
+							</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+			</seciton>
+		</div>
+	</article>
+	
+	<!-- 查看作业详情 -->
+	<div id="homework_info" class="reveal-modal large">
+		<p class="d-title">作业描述<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>描述详情:</label>
+				<textarea name="describe" readonly></textarea>
+				<br><br>
+				<img id='image' src="__PUBLIC__/upload/homework/" alt="" style="display:none">
+				<img id='images' src="" alt="">	<!-- 此文本框用于显示图片 -->
+			</div><br><br>
+			<div class="d-btngroup">
+				<!-- <input type="button" class="d-comfire" value="确定">-->
+				<input type="button" class="d-cancel" value="关闭">	
+			</div> 
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>

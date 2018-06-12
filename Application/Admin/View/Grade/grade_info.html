@@ -1,0 +1,83 @@
+<extend name="Public:grade" />
+<block name="grade">
+<script type="text/javascript">
+$(function(){
+	$("#editor_info .d-comfire").click(function(){
+		var grade_name = $("input[name='grade_name']").val();
+		var grade_leader = $("input[name='grade_leader']").val();
+		var grade_phone = $("input[name='grade_phone']").val();
+//		var grade_school = $("input[name='grade_school']").val();
+		//ajax提交更新
+		$.post("<{:U('Grade/grade_info_update')}>",{grade_name:grade_name,grade_leader:grade_leader,grade_phone:grade_phone},function(data,status){
+			if(data == 'success'){
+				layer.msg("信息保存成功!",{time:1500},function(){
+					window.location.reload(); //刷新当前页面
+				});
+			}else{
+				layer.msg("信息保存失败，请重试");
+			}
+		});	//post结束
+	})
+})
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>年级信息</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">当前年级:</label>
+					<input type="text" value="<{$info.name}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">年级负责人:</label>
+					<input type="text" value="<{$info.leader}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">联系方式:</label>
+					<input type="text" value="<{$info.phone_number}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">所属学校:</label>
+					<input type="text" value="<{$info.sch_name}>" readonly/>
+				</div>
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)" data-reveal-id="editor_info" data-animation="fade">编辑</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+	
+	<!-- 修改年级信息 -->
+	<div id="editor_info" class="reveal-modal large">
+		<p class="d-title">修改班级信息<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>当前年级:<span style="color:red">*</span><span class="class_name" style="color:red"></span></label>
+				<input type="text" name="grade_name" value="<{$info.name}>"/>
+			</div>
+			<div class="d-textbox">
+				<label>主要负责人:<span style="color:red">*</span><span class="class_leader" style="color:red"></span></label>
+				<input type="text" name="grade_leader" value="<{$info.leader}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>联系方式:<span style="color:red">*</span><span class="class_phone" style="color:red"></span></label>
+				<input type="text"  name="grade_phone" value="<{$info.phone_number}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>所属学校:<span style="color:red">*</span><span class="class_school" style="color:red"></span></label>
+				<input type="text"  name="grade_school" value="<{$info.sch_name}>" readonly/>
+				<span></span>
+			</div><br><br>
+			<div class="d-btngroup">
+				<input type="button" class="d-comfire" value="确定">
+				<input type="button" class="d-cancel" value="取消">	
+			</div>
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>
+

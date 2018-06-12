@@ -1,0 +1,201 @@
+<extend name="Public:device" />
+<block name="device">
+<script type="text/javascript">
+$(function(){
+	//单选按钮切换
+	$("#on_work").click(function(){
+		$("input[name='is_on_work']").attr('checked',true);
+		$("input[name='is_on_all']").attr('checked',false);
+	})
+	$("#on_all").click(function(){
+		$("input[name='is_on_work']").attr('checked',false);
+		$("input[name='is_on_all']").attr('checked',true);
+	})
+	$("#off_work").click(function(){
+		$("input[name='is_off_work']").attr('checked',true);
+		$("input[name='is_off_all']").attr('checked',false);
+	})
+	$("#off_all").click(function(){
+		$("input[name='is_off_work']").attr('checked',false);
+		$("input[name='is_off_all']").attr('checked',true);
+	})
+	//表单提交
+	$(".m-btnconfirm").click(function(){
+		var deviceID = $("input[name='deviceID']").val();
+		var IMEI = $("input[name='IMEI']").val();
+		var IMSI = $("input[name='IMSI']").val();
+		var collectRate = $("input[name='collectRate']").val();
+		var uploadRate = $("input[name='uploadRate']").val();
+		var bluetooth_station = $("input[name='bluetooth_station']").val();
+		var powerOnDateTime = $("input[name='powerOnDateTime']").val();
+		var powerOffDateTime = $("input[name='powerOffDateTime']").val();
+		var powerOnDateTimeFlag = $("input[name='powerOnDateTimeFlag']:checked").val();
+		var powerOffDateTimeFlag = $("input[name='powerOffDateTimeFlag']:checked").val();
+		var LBS_School = $("input[name='LBS_School']").val();
+		var LBS_Home = $("input[name='LBS_Home']").val();
+		var SOS = $("input[name='SOS']").val();
+		var Friend = $("input[name='Friend']").val();
+		if(!deviceID){
+			layer.msg("设备ID必填！");
+			return false;
+		}
+		if(!IMEI){
+			layer.msg("IMEI号必填！");
+			return false;
+		}
+		if(!IMSI){
+			layer.msg("IMSI号必填！");
+			return false;
+		}
+		if(!collectRate){
+			layer.msg("采集频率必填！");
+			return false;
+		}
+		if(!uploadRate){
+			layer.msg("上传频率必填！");
+			return false;
+		}
+		if(!bluetooth_station){
+			layer.msg("蓝牙基站号必填！");
+			return false;
+		}
+		if(!powerOnDateTime){
+			layer.msg("开机时间必填！");
+			return false;
+		}
+		if(!powerOffDateTime){
+			layer.msg("关机时间必填！");
+			return false;
+		}
+		if(!LBS_School){
+			layer.msg("学校基站必填！");
+			return false;
+		}
+		if(!LBS_Home){
+			layer.msg("家庭基站必填！");
+			return false;
+		}
+		if(!SOS){
+			layer.msg("求助号码必填！");
+			return false;
+		}
+		if(!Friend){
+			layer.msg("亲情号码必填！");
+			return false;
+		}
+		var arr = new Array();
+		arr[0] = deviceID;
+		arr[1] = IMEI;
+		arr[2] = IMSI;
+		arr[3] = collectRate;
+		arr[4] = uploadRate;
+		arr[5] = bluetooth_station;
+		arr[6] = powerOnDateTime;
+		arr[7] = powerOffDateTime;
+		arr[8] = powerOnDateTimeFlag;
+		arr[9] = powerOffDateTimeFlag;
+		arr[10] = LBS_School;
+		arr[11] = LBS_Home;
+		arr[12] = SOS;
+		arr[13] = Friend;
+		$.post("<{:U('Device/device_add_sub')}>",{arr:arr},function(data,status){
+			if(data == 'success'){
+				layer.msg("恭喜您添加设备成功",{time:2000},function(){
+					window.location.href = "<{:U('Device/device_info')}>";
+				});
+			}else{
+				layer.msg("添加设备失败，请重试");
+			}
+		});//ajax提交结束
+	})
+})
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>添加设备</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">设备ID:<span style="color:red">*</span></label>
+					<input type="text" name="deviceID" value=""/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">IMEI号:<span style="color:red">*</span></label>
+					<input type="text" name="IMEI" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">IMSI号:<span style="color:red">*</span></label>
+					<input type="text" name="IMSI"  value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">采集频率:<span style="color:red">*</span></label>
+					<input type="text" name="collectRate" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">上传频率:<span style="color:red">*</span></label>
+					<input type="text" name="uploadRate" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">蓝牙基站:<span style="color:red">*</span></label>
+					<input type="text"  name="bluetooth_station" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">开机时间:<span style="color:red">*</span></label>
+					<input type="text" name="powerOnDateTime" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">关机时间:<span style="color:red">*</span></label>
+					<input type="text" name="powerOffDateTime" value="" />
+				</div>
+				<div class="d-radwrap" style="width:610px;margin-top:10px;margin-bottom:15px;float:left;">
+					<label>开机日期:</label>
+					<div class="d-rdogroup">
+						<div>
+							<input type="radio" id="on_work" name="powerOnDateTimeFlag" value="5" >
+							<label for="on_work">工作日</label>							
+						</div>
+						<div>
+							<input type="radio" id="on_all" name="powerOnDateTimeFlag" value="7" checked>
+							<label for="on_all">全天</label>							
+						</div>
+					</div>
+				</div>
+				<div class="d-radwrap" style="width:300px;margin-top:10px;margin-bottom:15px;float:left;">
+					<label>关机日期:</label>
+					<div class="d-rdogroup">
+						<div>
+							<input type="radio" id="off_work" name="powerOffDateTimeFlag" value="5" >
+							<label for="off_work">工作日</label>							
+						</div>
+						<div>
+							<input type="radio" id="off_all" name="powerOffDateTimeFlag" value="7" checked>
+							<label for="off_all">全天</label>							
+						</div>
+					</div>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">学校基站:<span style="color:red">*</span></label>
+					<input type="text" name="LBS_School" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">家庭基站:<span style="color:red">*</span></label>
+					<input type="text" name="LBS_Home" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">SOS号码:<span style="color:red">*</span></label>
+					<input type="text" name="SOS" value="" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">亲情号:<span style="color:red">*</span></label>
+					<input type="text" name="Friend" value="" />
+				</div>
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)" >提交</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+
+</block>
+

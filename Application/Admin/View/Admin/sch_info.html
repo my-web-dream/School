@@ -1,0 +1,100 @@
+<extend name="Public:admin" />
+<block name="admin">
+<script type="text/javascript">
+$(function(){
+	$("#editor_info .d-comfire").click(function(){
+		var name = $("input[name='name']").val();
+		var position = $("input[name='position']").val();
+		var leader = $("input[name='leader']").val();
+		var phone_number = $("input[name='phone_number']").val();
+		if(!name){
+			layer.msg("学校名称必填！");
+		}
+		if(!position){
+			layer.msg("学校位置必填！");
+		}
+		if(!leader){
+			layer.msg("学校负责人必填！");
+		}
+		if(!phone_number){
+			layer.msg("联系方式必填！");
+		}
+		var arr = new Array();
+		arr[0] = name;arr[1] = position;arr[2] = leader;arr[3] = phone_number;
+		$.post("<{:U('Admin/sch_info_editor')}>",{arr:arr},function(data,status){
+			if(data == 'success'){
+				layer.msg("恭喜您修改成功",{time:1500},function(){
+					window.location.href = "<{:U('Admin/sch_info')}>";
+				});
+			}else{
+				layer.msg("修改失败，请重试");
+			}
+		});//ajax提交结束
+	})
+})
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>当前管理学校</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">学校名称:</label>
+					<input type="text" value="<{$info.name}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">学校位置:</label>
+					<input type="text" value="<{$info.position}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">学校负责人:</label>
+					<input type="text" value="<{$info.leader}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">学校负责人联系方式:</label>
+					<input type="text" value="<{$info.phone_number}>" readonly/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">信息修改时间:</label>
+					<input type="text" value="<{$info.create_time|date="Y-m-d",###}>" readonly/>
+				</div>
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)" data-reveal-id="editor_info" data-animation="fade">编辑</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+	
+	<!-- 修改学校信息 -->
+	<div id="editor_info" class="reveal-modal large">
+		<p class="d-title">修改学校信息<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>学校名称:<span style="color:red">*</span><span class="name" style="color:red"></span></label>
+				<input type="text" name="name" value="<{$info.name}>"/>
+			</div>
+			<div class="d-textbox">
+				<label>学校位置:<span style="color:red">*</span><span class="position" style="color:red"></span></label>
+				<input type="text" name="position" value="<{$info.position}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>学校负责人:<span style="color:red">*</span><span class="leader" style="color:red"></span></label>
+				<input type="text"  name="leader" value="<{$info.leader}>"/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>联系方式：<span style="color:red">*</span><span class="phone_number" style="color:red"></span></label>
+				<input type="text"  name="phone_number" value="<{$info.phone_number}>"/>
+				<span></span>
+			</div><br><br>
+			<div class="d-btngroup">
+				<input type="button" class="d-comfire" value="确定">
+				<input type="button" class="d-cancel" value="取消">	
+			</div>
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>
+

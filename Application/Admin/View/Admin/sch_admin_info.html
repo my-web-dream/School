@@ -1,0 +1,149 @@
+<extend name="Public:admin" />
+<block name="admin">
+<script type="text/javascript">
+$(function(){
+	//提交修改校级负责人信息,只改姓名与联系方式
+	$("#sch_admin_editor .d-comfire").click(function(){
+		var id =  $("#sch_admin_editor input[name='id']").val();//id参数不能传丢
+		var name = $("#sch_admin_editor input[name='name']").val();
+		var phone_number = $("#sch_admin_editor input[name='phone_number']").val();
+		$.post("<{:U('Admin/sch_admin_sub')}>",{id:id,name:name,phone_number:phone_number},function(data,status){
+			if(data = 'success'){
+				layer.msg('恭喜您，修改信息成功！',{time:1500},function(){
+	        		window.location.href = "<{:U('Admin/sch_admin_info')}>";  
+	        	});
+			}else{
+				layer.msg("修改失败，请重试");
+			}
+		})//post结束
+	})
+	
+})
+//信息回填
+function editor(id){
+	$.post("<{:U('Admin/sch_admin_one')}>",{id:id},function(data,status){
+		if(data){
+			//alert(data);return false;
+			$("#sch_admin_editor input[name='name']").val(data.name);
+			$("#sch_admin_editor input[name='phone_number']").val(data.phone_number);
+			$("#sch_admin_editor input[name='status']").val(data.status);
+			$("#sch_admin_editor input[name='auth']").val(data.auth);
+			$("#sch_admin_editor input[name='id']").val(data.id);
+		}else{
+			layer.msg("查询失败，请重试");
+		}
+		
+	})
+}
+//解除绑定
+function cancel(id){	//传入staff_id号
+	layer.open({
+		  title: '提示',
+		  content: '您确定要解除该人职务？',
+		  //yes的回掉函数
+		  yes: function(index,layero){
+			$.post("<{:U('Admin/sch_admin_cancel')}>",{id:id},function(data,status){
+				if(data == 'success'){	//添加成功，刷新当前页
+					layer.msg('恭喜您，解除职务成功！',{time:1500},function(){
+		        		window.location.href = "<{:U('Admin/sch_admin_info')}>";  
+		        	});
+				}else{
+					layer.msg("解除失败，请重试");
+				}
+			})//ajax解除绑定
+		 }
+	});     
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>学校负责人列表</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-btngroup">
+					<div class="m-btnadd">
+						<span  class="m-btnicon"></span>
+						<span>添加</span>
+					</div>
+					<div class="m-btndelete">
+						<span class="m-btnicon"></span>
+						<span>删除</span>
+					</div>
+				</div>
+				<div class="m-data">
+					<table>
+						<thead>
+							<tr>
+								<th> <input type="checkbox"> </th>
+								<th> 序号 </th>
+								<th> 姓名 </th>
+								<th> 状态 </th>
+								<th> 联系方式 </th>
+								<th> 职务 </th>
+								<th> 修改时间 </th>
+								<th> 操作 </th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="va">
+							<tr>
+								<td><input type="checkbox"></td>
+								<td><{$i}></td>
+								<td><{$va.name}></td>
+								<td>
+									<if condition="$va.status eq 1 ">在职
+									<else />离职
+									</if>
+								</td>
+								<td><{$va.phone_number}></td>
+								<td>
+									<if condition="$va.auth eq school">校级负责人
+									<else />其它
+									</if>
+								</td>
+								<td><{$va.create_time|date='Y-m-d',###}></td>
+								<td>
+									<a href="javascript:void(0)" data-reveal-id="sch_admin_editor" data-animation="fade" class="add-member" onclick="editor('<{$va.id}>')">修改信息</a>
+									<a href="javascript:void(0)" id="sch_admin_cancel" class="add-member" onclick="cancel('<{$va.id}>')">解除职位</a>
+								</td>
+							</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+			</seciton>
+		</div>
+	</article>
+	<!-- 修改学校负责人信息 -->
+	<div id="sch_admin_editor" class="reveal-modal large">
+		<p class="d-title">修改学校负责人信息<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>姓名:<span style="color:red">*</span></label>
+				<input type="text" name="name" value=""/>
+			</div>
+			<div class="d-textbox">
+				<label>状态:<span style="color:red">*</span></label>
+				<input type="text" name="status" value="" readonly/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>联系方式:<span style="color:red">*</span></label>
+				<input type="text" name="phone_number" value=""/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>职务：<span style="color:red">*</span></label>
+				<input type="text"  name="auth" value="" readonly/>
+				<span></span>
+			</div><br><br>
+			<input type="text" name="id" value="" style="display:none"/>
+			<div class="d-btngroup">
+				<input type="button" class="d-comfire" value="确定">
+				<input type="button" class="d-cancel" value="取消">	
+			</div>
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>

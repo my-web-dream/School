@@ -1,0 +1,168 @@
+<extend name="Public:class" />
+<block name="class">
+<script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/exporting.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#find_student_attend").click(function(){	//跳转到编辑页面
+		var date = $("input[name='date']").val();
+		var device_id = $("input[name='device_id']").val();
+		var url = "<{:U('Class/test_id')}>" + '?date='+date+"&device_id="+device_id;
+		window.location.href = url;  
+	});
+})
+//chart相关JS代码
+//左侧Javascript代码
+	$(function () {
+		Highcharts.setOptions({
+            lang: {
+               　			printChart:"打印图表",
+            	downloadJPEG: "下载JPEG图片" , 
+            	downloadPDF: "下载PDF文档"  ,
+            	downloadPNG: "下载PNG图片"  ,
+            	downloadSVG: "下载SVG矢量图" , 
+            	exportButtonTitle: "导出图片" 
+            }
+        });
+		$('#speed').highcharts({
+	        title: {
+	            text: '设备 "<{$device_id}>" 于 "<{$date}>" 的"车速"数据统计',
+	            x: -20 //center
+	        },
+	        xAxis: {
+	            categories: ['<{$worker_time}>']
+	        },
+	        yAxis: {
+	            title: {
+	                text: '车速'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: 'km/h'
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
+	        colors: [
+	        	'orange'
+	        ],
+	        credits:{
+	        	enabled:false	//取消显示版权
+	        },
+	        series: [{
+	            name: '车速',
+	            data: [<{$worker_spd}>]
+	        }]
+	    });
+		
+		$('#mile').highcharts({
+	        title: {
+	            text: '设备 "<{$device_id}>" 于 "<{$date}>" 日的"里程"数据统计',
+	            x: -20 //center
+	        },
+	        xAxis: {
+	            categories: ['<{$worker_time}>']
+	        },
+	        yAxis: {
+	            title: {
+	                text: '里程'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: 'km'
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
+	        credits:{
+	        	enabled:false	//取消显示版权
+	        },
+	        series: [{
+	            name: '行驶里程',
+	            data: [<{$worker_mile}>]
+	        }]
+	    });
+		
+		$('#fuel').highcharts({
+	        title: {
+	            text: '设备 "<{$device_id}> 于 "<{$date}>" 的"油耗"数据统计',
+	            x: -20 //center
+	        },
+	        colors: [
+	 	        	'green'
+	 	        ],
+	        xAxis: {
+	            categories: ['<{$worker_time}>']
+	        },
+	        yAxis: {
+	            title: {
+	                text: '油耗'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        credits:{
+	        	enabled:false	//取消显示版权
+	        },
+	        tooltip: {
+	            valueSuffix: 'rh'
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
+	        series: [{
+	            name: '油耗数据',
+	            data: [<{$worker_fuel}>]
+	        }]
+	    });
+});
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>学生考勤管理</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<form action="" method="get">
+			  			<input name="date" type="date" value="<{$Think.get.time}>" style="width:150px;"/>
+			  			<input name="device_id" type="text"  value="<{$Think.get.device_id}>" placeholder="请输入设备号" style="width:150px;"/>
+			  			&nbsp;&nbsp;参考格式：SC-GD001-00256
+			  			<br><div class="m-btnconfirm" id="find_student_attend">查看</div>
+		    		</form>
+	    		</div>
+	    		<div class="m-data">
+					<eq name="test" value="no">
+                  	<h2 align="center">当前暂无相关信息，请重新输入查询条件</h2>
+             		<else/>
+                  		<div id="speed" style="min-width:700px;height:400px"></div>
+                  		<div id="mile" style="min-width:700px;height:400px"></div>
+                  		<div id="fuel" style="min-width:700px;height:400px"></div>
+             		</eq>
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>

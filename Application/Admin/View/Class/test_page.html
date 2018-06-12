@@ -1,0 +1,56 @@
+<extend name="Public:class" />
+<block name="class">
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>分页数据测试</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-data">
+					<table>
+						<thead>
+							<tr>
+								<th> <input type="checkbox"> </th>
+								<th> 序号 </th>
+								<th> Data </th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="va">
+							<tr>
+								<td><input type="checkbox"></td>
+								<td><{$i}></td>
+								<td><{$va.data}></td>
+							</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+				<div class='page'>
+				
+					<if condition="$page gt 1">	<!-- 首页不显示该信息 -->
+						<a href="<{:U('Class/test_page',array('page'=>1))}>">首页</a>
+						<a href="<{:U('Class/test_page',array('page'=>$page-1))}>">上一页</a>
+					<else/>
+						<span class='disable'>首页</span>
+						<span class='disable'>上一页</span>
+					</if>
+					<if condition="$page lt $total_pages">	<!-- 尾页不显示该信息 -->
+						<a href="<{:U('Class/test_page',array('page'=>$page+1))}>">下一页</a>
+						<a href="<{:U('Class/test_page',array('page'=>$total_pages))}>">尾页</a>
+					<else/>
+						<span class='disable'>下一页</span>
+						<span class='disable'>尾页</span>
+					</if>
+					共 <{$total_pages}> 页
+					当前为第 <{$page}> 页
+					<form action="<{:U('Class/test_page')}>" method="get">
+						跳转到第<input type="text" name="page" size='2'>页
+						<input type="submit" value="确定">
+					</form> 
+					
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>

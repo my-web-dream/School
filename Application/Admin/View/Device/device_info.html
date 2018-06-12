@@ -1,0 +1,205 @@
+<extend name="Public:device" />
+<block name="device">
+<script type="text/javascript">
+$(function(){
+	//更新设备配置信息
+	$("#device_detail_info .d-comfire").click(function(){
+		var id =  $("#device_detail_info input[name='id']").val();//id参数不能传丢
+		var collectRate = $("#device_detail_info input[name='collectRate']").val();
+		var uploadRate = $("#device_detail_info input[name='uploadRate']").val();
+		var powerOnDateTime = $("#device_detail_info input[name='powerOnDateTime']").val();
+		var powerOffDateTime = $("#device_detail_info input[name='powerOffDateTime']").val();
+		var SOS = $("#device_detail_info input[name='SOS']").val();
+		var Friend = $("#device_detail_info input[name='Friend']").val();
+		$.post("<{:U('Device/device_info_update')}>",{id:id,collectRate:collectRate,uploadRate:uploadRate,powerOnDateTime:powerOnDateTime,powerOffDateTime:powerOffDateTime,SOS:SOS,Friend:Friend},function(data,status){
+			if(data = 'success'){
+				layer.msg('恭喜您，修改配置信息成功！',{time:1500},function(){
+	        		window.location.href = "<{:U('Device/device_info')}>";  
+	        	});
+			}else{
+				layer.msg("修改失败，请重试");
+			}
+		})//post结束
+	})
+	
+})
+//设备配置信息回填
+function editor(id){
+	$.post("<{:U('Device/device_info_only')}>",{id:id},function(data,status){
+		if(data){
+			$("#device_detail_info input[name='deviceID']").val(data.deviceID);
+			$("#device_detail_info input[name='IMEI']").val(data.IMEI);
+			$("#device_detail_info input[name='IMSI']").val(data.IMSI);
+			$("#device_detail_info input[name='collectRate']").val(data.collectRate);
+			$("#device_detail_info input[name='uploadRate']").val(data.uploadRate);
+			$("#device_detail_info input[name='powerOnDateTime']").val(data.powerOnDateTime);
+			$("#device_detail_info input[name='powerOffDateTime']").val(data.powerOffDateTime);
+			$("#device_detail_info input[name='SOS']").val(data.SOS);
+			$("#device_detail_info input[name='Friend']").val(data.Friend);
+			$("#device_detail_info input[name='id']").val(data.id);
+		}else{
+			layer.msg("查询失败，请重试");
+		}
+		
+	})
+}
+//解除绑定
+function cancel(id){	//传入staff_id号
+	layer.open({
+		  title: '提示',
+		  content: '您确定要解除该人职务？',
+		  //yes的回掉函数
+		  yes: function(index,layero){
+			$.post("<{:U('Device/sch_admin_cancel')}>",{id:id},function(data,status){
+				if(data == 'success'){	//添加成功，刷新当前页
+					layer.msg('恭喜您，解除职务成功！',{time:1500},function(){
+		        		window.location.href = "<{:U('Admin/sch_admin_info')}>";  
+		        	});
+				}else{
+					layer.msg("解除失败，请重试");
+				}
+			})//ajax解除绑定
+		 }
+	});     
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>设备基本信息</span>
+			</header>
+			<seciton class="m-content">
+				<!-- 
+				<div class="m-btngroup">
+					<div class="m-btnadd">
+						<span  class="m-btnicon"></span>
+						<span>
+							<a href="javascript:void(0)" data-reveal-id="device_add" data-animation="fade">添加</a>
+						</span>
+					</div>
+					<div class="m-btndelete">
+						<span class="m-btnicon"></span>
+						<span>删除</span>
+					</div>
+				</div> -->
+				<div class="m-data">
+					<table>
+						<thead>
+							<tr>
+								<th> <input type="checkbox"> </th>
+								<th> 序号 </th>
+								<th> 设备编号 </th>
+								<th> IMEI </th>
+								<th> IMSI </th>
+								<th> 使用情况 </th>
+								<th> 修改时间 </th>
+								<th> 操作 </th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="va">
+							<tr>
+								<td><input type="checkbox"></td>
+								<td><{$i}></td>
+								<td><{$va.deviceID}></td>
+								<td><{$va.IMEI}></td>
+								<td><{$va.IMSI}></td>
+								<td>
+									<if condition="$va.is_bind eq 1 ">已使用
+									<else />未使用
+									</if>
+								</td>
+								<td><{$va.create_time|date='Y-m-d',###}></td>							
+								<td>
+									<a href="javascript:void(0)" data-reveal-id="device_detail_info" data-animation="fade" class="add-member" onclick="editor('<{$va.id}>')">修改信息</a>
+									<a href="javascript:void(0)" id="other" class="add-member" onclick="other('<{$va.id}>')">其它</a>
+								</td>
+							</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+				<!-- 分页符 -->
+				<div class='page'>
+					<if condition="$page gt 1">	<!-- 首页不显示该信息 -->
+						<a href="<{:U('Device/device_info',array('page'=>1))}>">首页</a>
+						<a href="<{:U('Device/device_info',array('page'=>$page-1))}>">上一页</a>
+					<else/>
+						<span class='disable'>首页</span>
+						<span class='disable'>上一页</span>
+					</if>
+					<if condition="$page lt $total_pages">	<!-- 尾页不显示该信息 -->
+						<a href="<{:U('Device/device_info',array('page'=>$page+1))}>">下一页</a>
+						<a href="<{:U('Device/device_info',array('page'=>$total_pages))}>">尾页</a>
+					<else/>
+						<span class='disable'>下一页</span>
+						<span class='disable'>尾页</span>
+					</if>
+					共 <{$total_pages}> 页
+					当前为第 <{$page}> 页
+					<form action="<{:U('Device/device_info')}>" method="get">
+						跳转到第<input type="text" name="page" size='2'>页
+						<input type="submit" value="确定">
+					</form> 
+					
+				</div>
+			</seciton>
+		</div>
+	</article>
+	<!-- 修改设备配置信息 -->
+	<div id="device_detail_info" class="reveal-modal large">
+		<p class="d-title">修改设备信息<span></span></p>
+		<a class="close-reveal-modal">&#215;</a>		
+		<div class="add-member">
+			<div class="d-textbox">
+				<label>设备ID:<span style="color:red">*</span></label>
+				<input type="text" name="deviceID" value="" readonly/>
+			</div>
+			<div class="d-textbox">
+				<label>IMEI号:<span style="color:red">*</span></label>
+				<input type="text" name="IMEI" value="" readonly/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>IMSI号:<span style="color:red">*</span></label>
+				<input type="text" name="IMSI" value="" readonly/>
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>采集频率:<span style="color:red">*</span></label>
+				<input type="text" name="collectRate" value="" />
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>上传频率:<span style="color:red">*</span></label>
+				<input type="text" name="uploadRate" value="" />
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>开机时间:<span style="color:red">*</span></label>
+				<input type="text" name="powerOnDateTime" value="" />
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>关机时间:<span style="color:red">*</span></label>
+				<input type="text" name="powerOffDateTime" value="" />
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>SOS号码:<span style="color:red">*</span></label>
+				<input type="text" name="SOS" value="" />
+				<span></span>
+			</div>
+			<div class="d-textbox">
+				<label>亲情号:<span style="color:red">*</span></label>
+				<input type="text" name="Friend" value="" />
+				<span></span>
+			</div><br><br>
+			<input type="text" name="id" value="" style="display:none"/>
+			<div class="d-btngroup">
+				<input type="button" class="d-comfire" value="确定">
+				<input type="button" class="d-cancel" value="取消">	
+			</div>
+		</div>	
+	</div> <!-- 弹窗结束 -->
+</block>

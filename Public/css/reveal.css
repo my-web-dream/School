@@ -1,0 +1,400 @@
+/******************************公用弹窗css***************************/
+.reveal-modal-bg {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background: #000;
+	background: rgba(0, 0, 0, .3);
+	z-index: 100;
+	display: none;
+	top: 0;
+	left: 0;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.reveal-modal {
+	visibility: hidden;
+	top: 120px;
+	left: 50%;
+	margin-left: -183px;
+	width: 366px;
+	background: rgb(255, 255, 255);
+	position: absolute;
+	z-index: 101;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+	-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+}
+.reveal-modal.small {
+	width: 200px;
+	margin-left: -100px;
+}
+.reveal-modal.medium {
+	width: 400px;
+	margin-left: -200px;
+}
+.reveal-modal.large {
+	width: 600px;
+	margin-left: -300px;
+}
+.reveal-modal.xlarge {
+	width: 800px;
+	margin-left: -440px;
+}
+/*弹窗公用标题样式*/
+.reveal-modal .d-title {
+	font-size: 14px;
+	color: #333;
+	height: 40px;
+	line-height: 40px;
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
+	padding-left: 15px;
+	margin: 0;
+	position: relative;
+}
+/*右上角结束标志*/
+.reveal-modal .close-reveal-modal {
+	font-size: 30px;
+	line-height: .5;
+	position: absolute;
+	top: 10px;
+	right: 8px;
+	color: #aaa;
+	text-shadow: 0 -1px 1px rbga(0, 0, 0, .6);
+	font-weight: bold;
+	cursor: pointer;
+}
+.reveal-modal .close-reveal-modal:hover {
+	color: #666;
+}
+
+
+
+
+
+
+/********************************公用弹窗结束**************************/
+
+
+
+
+/*修改姓名对话框——start*/
+.modify-name {
+	text-decoration: none;
+	font-size: 14px;
+	margin: 0 10px;
+}
+.modify-name:hover {
+	text-decoration: none;
+	color: #41a4cb;
+}
+#modify-name p span,#modify-name p span {
+	color: red;
+	margin-left: 61px;
+	font-weight: normal;
+}
+#modify-name .d-modpwd,#modify-name .d-modpwd {
+	margin: 0 15px;
+	font-size: 14px;
+	color: #333;
+}
+#modify-name .d-modpwd label,#modify-name .d-modpwd label {
+	display: block;
+	margin: 10px 0;
+}
+#modify-name .d-modpwd span ,#modify-name .d-modpwd span{
+	color: #666;
+	font-size: 12px;
+	margin-left: 5px;
+	vertical-align: middle;
+}
+#modify-name .d-modpwd input ,#modify-name .d-modpwd input{
+	width: 224px;
+	height: 24px;
+	line-height: 24px;
+	padding: 3px 5px;
+	border: 1px solid #AAA2A2;
+	border-radius: 2px;
+	outline: none;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#modify-name .d-modpwd input:focus,#modify-name .d-modpwd input:focus {
+	border-color: #3e95c8;
+}
+#modify-name .d-btngroup,#modify-name .d-btngroup {
+	text-align: center;
+	margin-bottom: 15px;
+}
+#modify-name .d-btngroup input,#modify-name .d-btngroup input {
+	width: 100px;
+	height: 32px;
+	line-height: 30px;
+	text-align: center;
+	margin: 15px 20px 5px;
+	color: #fff;
+	font-size: 14px;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	outline: none;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#modify-name .d-comfire,#modify-name .d-comfire {
+	background-color: #5990cf;
+}
+#modify-name .d-cancel,#modify-name .d-cancel {
+	background-color: #a8a8a8;
+}
+#modify-name .d-comfire:hover,#modify-name .d-comfire:hover {
+	background-color: #71ADF4;
+}
+#modify-name .d-cancel:hover,#modify-name .d-cancel:hover {
+	background-color: #CCCCCC;
+}
+
+/*修改姓名对话框——end*/
+
+
+
+
+
+/*修改信息——start*/
+.add-member {
+	text-decoration: none;
+	color: #3e95c8;
+}
+.add-member:hover {
+	color: #0b85cc;
+}
+.add-member .d-addcontent {
+	margin: 0 15px 20px;
+}
+.add-member .d-textbox {
+	display: inline-block;
+	margin-left: 25px;
+	margin-right: 40px;
+}
+.add-member .d-textbox:nth-of-type(2n) {
+	margin-right: 0;
+}
+.add-member .d-textbox label {
+	display: block;
+	font-size: 13px;
+	margin: 10px 0;
+	color: #333;
+}
+.add-member .d-textbox label span {
+	color: red;
+}
+.add-member .d-textbox input {
+	width: 224px;
+	height: 24px;
+	line-height: 24px;
+	padding: 3px 5px;
+	border: 1px solid #AAA2A2;
+	border-radius: 2px;
+	outline: none;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.add-member .d-textbox input:focus {
+	border-color: #3e95c8;
+}
+.add-member .d-textbox textarea {
+	width: 550px;
+	height: 65px;
+	padding: 5px 8px;
+	border: 1px solid #AAA2A2;
+	border-radius: 3px;
+	font-size: 13px;
+	word-break: break-all;
+	vertical-align: top;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.add-member .d-textbox textarea:focus {
+	border-color: #3e95c8;
+}
+.add-member .d-btngroup {
+	clear: both;
+}
+.add-member .d-btngroup {
+	margin-bottom: 15px;
+	text-align: center;
+}
+.add-member .d-btngroup  input {
+	width: 100px;
+	height: 35px;
+	line-height: 32px;
+	margin-right: 35px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #fff;
+	text-align: center;
+	border: none;
+	outline: none;
+	border-radius: 3px;
+	background-color: #3e95c8;
+	font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.add-member .d-btngroup .d-cancel {
+	background-color: #A6A6A6;
+}
+.add-member .d-btngroup .d-addsave:hover {
+	background-color: #71ADF4;
+}
+.add-member .d-btngroup .d-cancel:hover {
+	background-color: #CCCCCC;
+}
+
+/*修改信息——end*/
+
+/**批量删除对话框样式——start**/
+.datch-del {
+	color: #f04c32;
+	margin: 0 5px;
+	text-decoration: none;
+}
+.datch-del:hover {
+	color: #f32;
+}
+#datch-del .d-delicon {
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	margin: 15px auto;
+	color: #fff;
+	text-align: center;
+	font-size: 30px;
+	background-color: #e07365;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	box-shadow: 1px 1px 2px #666;
+	-webkit-box-shadow: 1px 1px 2px #666;
+	-moz-box-shadow: 1px 1px 2px #666;
+	-ms-box-shadow: 1px 1px 2px #666;
+}
+#datch-del .d-text {
+	width: 100%;
+	color: #333;
+	text-align: center;
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+#datch-del .d-btngroup {
+	text-align: center;
+	margin-bottom: 15px;
+}
+#datch-del button {
+	width: 80px;
+	height: 32px;
+	line-height: 30px;
+	text-align: center;
+	margin: 0 15px;
+	color: #fff;
+	font-size: 14px;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	outline: none;
+}
+#datch-del .d-comfire {
+	background-color: #5990cf;
+}
+#datch-del .d-cancel {
+	background-color: #b4b4b4;
+}
+#datch-del .d-comfire:hover {
+	background-color: #2c84ea;
+}
+#datch-del .d-cancel:hover {
+	background-color: #d1cece;
+}
+
+/**批量删除对话框样式——end**/
+
+/*详情对话框样式——start*/
+.pro-detail {
+	text-decoration: none;
+	color: #666;
+	margin: 0 5px;
+}
+.pro-detail:hover {
+	color: #333;
+}
+#d-detail .d-detcont {
+	margin: 15px 15px;
+}
+
+/*详情对话框样式——start*/
+
+/*单选按钮样式——start*/
+.d-radwrap {
+	font-size: 13px;
+	color: #333;
+	margin-top:14px;
+}
+.d-rdogroup{
+	margin:8px 0;
+}
+.d-rdogroup>div{
+	display:inline-block;
+	margin-right:45px;
+}
+.d-rdogroup input[type=radio] {
+	width: 16px;
+	height: 16px;
+	margin:0;
+	visibility: hidden;
+	vertical-align: middle;
+}
+input[type=radio]+label {
+	position: relative;
+	vertical-align: middle;
+}
+input[type=radio]+label:before {
+	display: block;
+	content: '';
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	border-radius: 50%;
+	border: 1px solid #b1b9c3;
+	position: absolute;
+	top: 1px;
+	left: -20px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+}
+input[type=radio]:checked+label:before {
+	background-color:#3e95c8;
+	border: 1px solid #3e95c8;
+}
+input[type=radio]:checked+label:after {
+	display: block;
+	content: '';
+	width: 16px;
+	height: 16px;
+	padding:3px;
+	background-clip:content-box;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color:#fff;
+	border: 1px solid transparent;
+	position: absolute;
+	top: 1px;
+	left: -20px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+}
+
+/*单选按钮样式——end*/

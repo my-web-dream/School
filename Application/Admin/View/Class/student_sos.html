@@ -1,0 +1,111 @@
+<extend name="Public:class" />
+<block name="class">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/js/datetimepicker/jquery.datetimepicker.css"/>
+<script src="__PUBLIC__/js/datetimepicker/jquery.js"></script>
+<script src="__PUBLIC__/js/datetimepicker/build/jquery.datetimepicker.full.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#find_student_attend").click(function(){	//跳转到编辑页面
+		var date = $("input[name='date']").val();
+		var device_id = $("input[name='device_id']").val();
+		var url = "<{:U('Class/student_sos')}>" + '?date='+date+"&device_id="+device_id;
+		window.location.href = url;  
+	});
+	//日期控件调整
+	$("#datetimepicker").datetimepicker({
+		  minView: "month",//设置只显示到月份
+		  language:  'zh-CN',
+		  format : "20y-m-d",//日期格式
+		  autoclose:true,//选中关闭
+		  todayBtn: true//今日按钮
+	});
+})
+function map(name,deviceID,longitude,latitude,time){
+	var date = $("input[name='date']").val();
+	//设置后台地址
+	var url = '<{:U("Class/student_sos_map")}>'+'?date='+date+'&time='+time+
+		'&student_name='+name +'&deviceID='+deviceID+'&longitude='+longitude+'&latitude='+latitude;
+	window.open(url,'newwindow', 'height=530, width=1200, top=104, left=50, toolbar=no, menubar=no, scrollbars=no,resizable=no,location=no, status=no');
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>学生报警管理</span>
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<form action="" method="get">
+			  			<input type="text" name=date id='datetimepicker' style="width:150px">
+			  			<input name="device_id" type="text"  value="<{$Think.get.device_id}>" placeholder="请输入设备号" style="width:150px;"/>
+			  			&nbsp;&nbsp;参考格式：SC-GD001-00256
+			  			<br><div class="m-btnconfirm" id="find_student_attend">查看</div>
+		    		</form>
+	    		</div>
+	    		<script type="text/javascript">
+	 				$('#datetimepicker').datetimepicker({value:'<{$Think.get.time}>',step:10});
+				</script>
+	    		<div class="m-data">
+	    			<eq name="test" value="no">
+                  		<h2 align="center">当前暂无相关信息，请重新输入查询条件</h2>
+             		<else/>
+						<table>
+							<thead>
+								<tr>
+									<th> <input type="checkbox"> </th>
+									<th> 序号 </th>
+									<th> 学生姓名 </th>
+									<th> 设备编号 </th>
+									<th> IMEI </th>
+									<th> IMSI </th>
+									<th> 报警时间 </th>
+									<th> 详情 </th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="info" id="va">
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><{$i}></td>
+									<td><{$va.name}></td>
+									<td><{$va.deviceID}></td>
+									<td><{$va.IMEI}></td>
+									<td><{$va.IMSI}></td>
+									<td><{$va.utcDateTime|date="H:i:s",###}></td>
+									<td>
+										<a href="#" class="add-member" onclick="map('<{$va.name}>','<{$va.deviceID}>','<{$va.longitude}>','<{$va.latitude}>','<{$va.utcDateTime|date="H:i:s",###}>')">查看详情</a>
+									</td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+						<!-- 分页符 -->
+						<div class='page'>
+							<if condition="$page gt 1">	<!-- 首页不显示该信息 -->
+								<a href="<{:U('Class/student_sos',array('page'=>1,'device_id'=>$device_id,'date'=>$date))}>">首页</a>
+								<a href="<{:U('Class/student_sos',array('page'=>$page-1,'device_id'=>$device_id,'date'=>$date))}>">上一页</a>
+							<else/>
+								<span class='disable'>首页</span>
+								<span class='disable'>上一页</span>
+							</if>
+							<if condition="$page lt $total_pages">	<!-- 尾页不显示该信息 -->
+								<a href="<{:U('Class/student_sos',array('page'=>$page+1,'device_id'=>$device_id,'date'=>$date))}>">下一页</a>
+								<a href="<{:U('Class/student_sos',array('page'=>$total_pages,'device_id'=>$device_id,'date'=>$date))}>">尾页</a>
+							<else/>
+								<span class='disable'>下一页</span>
+								<span class='disable'>尾页</span>
+							</if>
+							共 <{$total_pages}> 页
+							当前为第 <{$page}> 页
+							<form action="<{:U('Class/student_sos',array('device_id'=>$device_id,'date'=>$date))}>" method="get">
+								跳转到第<input type="text" name="page" size='2'>页
+								<input type="submit" value="确定">
+							</form> 
+						</div>
+						<!-- 分页符结束 -->
+					</eq>
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>

@@ -1,0 +1,48 @@
+<extend name="Public:class" />
+<block name="class">
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>管理员</span>
+			</header>
+			<seciton class="m-content">
+				<!--  
+				<div class="m-btngroup">
+					<div class="m-btnadd">
+						<span  class="m-btnicon"></span>
+						<span>添加</span>
+					</div>
+					<div class="m-btndelete">
+						<span class="m-btnicon"></span>
+						<span>删除</span>
+					</div>
+				</div>
+				-->
+				<div class="m-data">
+					<table>
+						<thead>
+							<tr>
+								<th> <input type="checkbox"> </th>
+								<th> 序号 </th>
+								<th> 姓名 </th>
+								<th> 班级名称 </th>
+								<th> 联系方式 </th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name="info" id="va">
+							<tr>
+								<td><input type="checkbox"></td>
+								<td><{$i}></td>
+								<td><{$va.name}></td>
+								<td><{$va.object_name}></td>
+								<td><{$va.phone_number}></td>
+							</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>

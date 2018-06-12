@@ -1,0 +1,111 @@
+<extend name="Public:class" />
+<block name="class">
+<script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload/ajaxfileupload.js" ></script>
+<script type="text/javascript">
+$(function(){
+	//作业上传提交
+	$(".m-btnconfirm a").click(function(){
+		var subject = $("select[name='subject']").find("option:selected").text();	//获取名称
+		var teacher = $("input[name='teacher']").val();
+		var describe = $("textarea[name='describe']").val();
+		if(subject == "请选择科目"){
+			layer.msg('您还没有选择学科！');
+			return false;
+		}
+		if(teacher == ""){
+			layer.msg('教师姓名必填！');
+			return false;
+		}
+		if(describe == ""){
+			layer.msg('作业信息必填！');
+			return false;
+		}
+		if(describe.length > 100){
+			layer.msg('作业描述过长！');
+			return false;
+		}
+		$.ajaxFileUpload({
+			url:"<{:U('Class/homework_sub')}>",//这个是要提交到上传的php程序文件
+			secureuri:false,//是否启用安全提交
+			fileElementId:'homework',//需要上传的文件域ID
+			dataType: 'json',//返回数据类型
+			data:{subject:subject,teacher:teacher,describe:describe},
+			type: 'post',//POST方式提交
+			success: function (data,status)
+			{
+				if(data == 'file none'){
+					layer.msg("文件未上传，请重试");
+					return false;
+				}else if(data == 'undefind type'){
+					layer.msg("未知文件类型");
+					return false;
+				}else if(data == 'too large'){
+					layer.msg("文件过大，请上传2M以内的文件");
+					return false;
+				}else if(data == 'other error'){
+					layer.msg("其他错误");
+					return false;
+				}else if(data == 'success'){
+					layer.msg('作业发布成功！',{time:1500},function(){
+	        			window.location.href = "<{:U('Class/homework_select')}>";
+	        		});
+				}
+			},
+			error: function (data,status)
+			{
+				layer.msg("服务器异常错误");
+				return false;
+			}
+		})  //ajax over
+	})
+})
+//图片本地预览
+function preview(avatar){
+    for(var i=0;i<document.getElementById(avatar).files.length;i++){
+        var f = document.getElementById(avatar).files[i];
+        var src = window.URL.createObjectURL(f);
+       $("#"+avatar).next().html('<img src='+src+' width="200" height="180" />');
+   } 
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+			<span>作业发布</span>
+			<!--	<ul class="m-subtitle">
+					<a href="#"><li class="m-underline">文字发布</li></a>
+					<a href="#"><li>图片发布</li></a>
+				</ul> -->
+			</header>
+			<seciton class="m-content">
+				<div class="m-group">
+					<label class="m-grouptitle">所属科目:</label>
+					<select class="select" name="subject" >
+						<option selected="selected" value="0">请选择科目</option>
+						<option value="1">语文</option>
+						<option value="2">数学</option>
+						<option value="3">英语</option>
+						<option value="4">自然科学</option>
+					</select>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">教师姓名:</label>
+					<input type="text" name="teacher" placeholder="请填写教师姓名" value=""/>
+				</div>
+				<br>
+				<input id="homework" type="file" size="45" onchange="preview('homework')" name="homework">
+				预览效果：
+				<div></div>
+				<br><br>
+				<div class="m-group">
+					<label class="m-grouptitle">作业描述：</label>
+					<textarea name="describe" placeholder="字数限100字以内" /></textarea>
+				</div>	
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)">发布</a>
+				</div>
+			</seciton>
+		</div>
+	</article>
+</block>
+

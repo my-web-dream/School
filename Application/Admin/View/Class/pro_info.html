@@ -1,0 +1,68 @@
+<extend name="Public:class" />
+<block name="class">
+<script type="text/javascript">
+$(function(){
+	$(".m-btnconfirm").click(function(){
+		var name = $("input[name='name']").val();
+		var phone_number = $("input[name='phone_number']").val();
+		//ajax提交更新
+		$.post("<{:U('Class/pro_info_update')}>",{name:name,phone_number:phone_number},function(data,status){
+			if(data == 'success'){
+				layer.msg("信息保存成功!");
+				setTimeout('location()',3000);
+			}else{
+				layer.msg("信息保存失败，请重试");
+			}
+		});	//post结束
+	})//click结束
+})
+function location(){
+	window.location.reload(); //刷新当前页面
+}
+</script>
+	<article class="main">
+		<div class="m-body">
+			<header class="m-title">
+				<span>个人信息</span>
+			</header>
+			<seciton class="m-content">
+				<form method="post">
+				<div class="m-group">
+					<label class="m-grouptitle">用户名:</label>
+					<input type="text" value="<{$info.username}>" disabled/>
+					<!--<span>修改信息</span>!-->
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">登录密码:</label>
+					<input type="text" value="******" disabled/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">个人姓名:</label>
+					<input type="text" name="name" value="<{$info.name}>" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">联系方式:</label>
+					<input type="text" name="phone_number" value="<{$info.phone_number}>" />
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">权限级别:</label>
+					<input type="text" value="<{$Think.session.auth_name}>" disabled/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">修改时间:</label>
+					<input type="text" value='<{$info.create_time|date="Y-m-d H:i:s",###}>' disabled/>
+				</div>
+				<div class="m-group">
+					<label class="m-grouptitle">个人头像:</label>
+					<img class="head_images" src="__PUBLIC__/upload/<{$info.head_img}>">	
+				</div>
+				<input type='file' name='editor_img' >
+				<div class="m-btnconfirm">
+					<a href="javascript:void(0)">保存</a>
+				</div>
+				</form>
+			</seciton>
+		</div>
+	</article>
+</block>
+
